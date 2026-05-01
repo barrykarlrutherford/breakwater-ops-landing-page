@@ -154,13 +154,23 @@ section {
 }
 
 .contact-method {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: #fff;
+    border-color: var(--line);
+    color: var(--ink);
 }
 
 .contact-method h3 {
-    color: #fff;
+    color: var(--ink);
+}
+
+.contact-method p {
+    color: var(--muted);
+}
+
+.contact-method .button-secondary {
+    color: var(--navy);
+    background: var(--soft);
+    border-color: var(--line);
 }
 
 .contact .pricing-note {
