@@ -382,6 +382,8 @@ p {
 
 .team-member {
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .team-member img {
@@ -393,6 +395,12 @@ p {
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 10px 28px rgba(23, 32, 42, 0.16);
+    flex-shrink: 0;
+}
+
+/* Make Barry's photo taller to show full face */
+.team-member:first-child img {
+    height: 280px;
 }
 
 .team-member .bio {
@@ -400,7 +408,9 @@ p {
 }
 
 .team-email {
-    margin-top: 10px;
+    margin-top: auto;
+    padding-top: 20px;
+    align-self: center;
 }
 
 .contact-options {
@@ -488,5 +498,9 @@ p {
     .team-member img {
         width: 180px;
         height: 180px;
+    }
+
+    .team-member:first-child img {
+        height: 230px;
     }
 }
