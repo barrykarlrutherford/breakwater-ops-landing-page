@@ -31,8 +31,11 @@
     <nav class="nav">
         <div class="container">
             <a href="/" class="logo">
-                <img src="images/breakwater-logo.png" alt="Breakwater Operations" height="40">
+                <img src="images/breakwater-logo.png" alt="Breakwater Operations">
             </a>
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+            </button>
             <div class="nav-links">
                 <a href="#services">Services</a>
                 <a href="#approach">Approach</a>
@@ -232,5 +235,22 @@
         </div>
     </footer>
 
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>
