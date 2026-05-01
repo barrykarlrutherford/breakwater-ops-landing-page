@@ -263,8 +263,8 @@ p {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 44px;
-    padding: 11px 18px;
+    min-height: 40px;
+    padding: 8px 20px;
     border-radius: 6px;
     border: 1px solid transparent;
     font-weight: 700;
@@ -409,7 +409,7 @@ p {
 
 .team-email {
     margin-top: auto;
-    padding-top: 20px;
+    padding-top: 12px;
     align-self: center;
 }
 
