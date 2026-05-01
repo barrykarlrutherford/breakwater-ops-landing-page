@@ -57,9 +57,13 @@ a:hover {
 }
 
 .logo {
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 1.1rem;
+    display: block;
+}
+
+.logo img {
+    display: block;
+    height: 40px;
+    width: auto;
 }
 
 .nav-links {
