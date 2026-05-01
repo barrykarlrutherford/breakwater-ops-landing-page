@@ -132,8 +132,39 @@ a:hover {
     font-weight: 600;
 }
 
+.nav-links a.cta-button {
+    color: #fff;
+}
+
 section {
     padding: 84px 0;
+}
+
+.contact {
+    background: var(--navy);
+    color: #fff;
+}
+
+.contact h2 {
+    color: #fff;
+}
+
+.contact .section-intro {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-method {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.contact-method h3 {
+    color: #fff;
+}
+
+.contact .pricing-note {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .hero {
