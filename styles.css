@@ -400,7 +400,7 @@ p {
 
 /* Make Barry's photo taller to show full face */
 .team-member:first-child img {
-    height: 280px;
+    height: 310px;
 }
 
 .team-member .bio {
@@ -501,6 +501,6 @@ p {
     }
 
     .team-member:first-child img {
-        height: 230px;
+        height: 250px;
     }
 }
