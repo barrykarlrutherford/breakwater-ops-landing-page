@@ -115,8 +115,15 @@ a:hover {
 
 .logo img {
     display: block;
-    height: 180px;
+    height: 80px;
     width: auto;
+    max-width: 100%;
+}
+
+@media (max-width: 960px) {
+    .logo img {
+        height: 60px;
+    }
 }
 
 .nav-links {
