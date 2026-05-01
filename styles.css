@@ -54,7 +54,7 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    min-height: 100px;
+    min-height: 120px;
     padding: 10px 0;
 }
 
@@ -110,19 +110,30 @@ a:hover {
 }
 
 .logo {
-    display: block;
+    display: flex;
+    align-items: center;
+    max-height: 160px;
 }
 
 .logo img {
     display: block;
-    height: 80px;
+    height: 160px;
     width: auto;
     max-width: 100%;
+    object-fit: contain;
 }
 
 @media (max-width: 960px) {
+    .nav .container {
+        min-height: 80px;
+    }
+
+    .logo {
+        max-height: 100px;
+    }
+
     .logo img {
-        height: 60px;
+        height: 100px;
     }
 }
 
