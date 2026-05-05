@@ -47,6 +47,7 @@ a:hover {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     background: var(--logo-bg);
     backdrop-filter: blur(12px);
+    transition: all 0.3s ease-in-out;
 }
 
 .nav .container {
@@ -56,6 +57,16 @@ a:hover {
     gap: 24px;
     min-height: 120px;
     padding: 10px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav.scrolled {
+    background: rgba(252, 250, 247, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav.scrolled .container {
+    min-height: 80px;
 }
 
 .menu-toggle {
@@ -121,6 +132,11 @@ a:hover {
     width: auto;
     max-width: 100%;
     object-fit: contain;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav.scrolled .logo img {
+    height: 90px;
 }
 
 @media (max-width: 960px) {
