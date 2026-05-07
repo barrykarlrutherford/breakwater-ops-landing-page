@@ -317,6 +317,7 @@ p {
 }
 
 .services-grid,
+.differentiator-grid,
 .team-grid,
 .approach-content,
 .contact-options,
@@ -330,7 +331,13 @@ p {
     margin-top: 36px;
 }
 
+.differentiator-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 34px;
+}
+
 .service-card,
+.differentiator-item,
 .approach-principles,
 .team-member,
 .contact-method {
@@ -341,6 +348,10 @@ p {
 }
 
 .service-card.featured {
+    border-top: 4px solid var(--teal);
+}
+
+.differentiator-item {
     border-top: 4px solid var(--teal);
 }
 
@@ -499,6 +510,7 @@ p {
     }
 
     .services-grid,
+    .differentiator-grid,
     .team-grid,
     .approach-content,
     .contact-options,
