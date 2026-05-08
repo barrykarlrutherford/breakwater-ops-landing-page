@@ -61,7 +61,7 @@ a:hover {
 }
 
 .nav.scrolled {
-    background: rgba(252, 250, 247, 0.95);
+    background: var(--logo-bg);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
