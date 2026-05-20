@@ -238,6 +238,42 @@
         </div>
     </section>
 
+    <div class="chatbot" data-open="false">
+        <button class="chatbot-toggle" type="button" aria-label="Open Breakwater chat" aria-expanded="false">
+            <span class="chatbot-toggle-icon" aria-hidden="true"></span>
+        </button>
+
+        <div class="chatbot-panel" role="dialog" aria-label="Breakwater chat assistant">
+            <div class="chatbot-header">
+                <div>
+                    <p class="chatbot-kicker">Breakwater Assistant</p>
+                    <h2>Ask a quick question</h2>
+                </div>
+                <button class="chatbot-close" type="button" aria-label="Close chat">×</button>
+            </div>
+
+            <div class="chatbot-status">Frontend preview. Live AI responses are coming soon.</div>
+
+            <div class="chatbot-messages" aria-live="polite">
+                <div class="chat-message bot">
+                    <p>Hi. I can help you understand Breakwater's services, the AI audit process, and how to schedule a consultation.</p>
+                </div>
+            </div>
+
+            <div class="chatbot-prompts" aria-label="Suggested questions">
+                <button type="button" data-prompt="What does Breakwater do?">What do you do?</button>
+                <button type="button" data-prompt="Do you build custom AI tools?">Custom AI?</button>
+                <button type="button" data-prompt="How do I book a consultation?">Book a call</button>
+            </div>
+
+            <form class="chatbot-form">
+                <label class="sr-only" for="chatbot-input">Message Breakwater</label>
+                <textarea id="chatbot-input" name="message" rows="1" placeholder="Ask about services, audits, or scheduling"></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -293,6 +329,121 @@
                 navLinks.classList.remove('active');
                 menuToggle.classList.remove('active');
             });
+        });
+
+        const chatbot = document.querySelector('.chatbot');
+        const chatbotToggle = document.querySelector('.chatbot-toggle');
+        const chatbotClose = document.querySelector('.chatbot-close');
+        const chatbotMessages = document.querySelector('.chatbot-messages');
+        const chatbotForm = document.querySelector('.chatbot-form');
+        const chatbotInput = document.querySelector('#chatbot-input');
+        const chatbotPrompts = document.querySelectorAll('.chatbot-prompts button');
+
+        const fallbackResponses = [
+            {
+                keywords: ['book', 'call', 'consult', 'schedule', 'meeting'],
+                response: 'You can book a 30-minute consultation with Barry through the scheduler in the contact section. The direct link is https://calendly.com/barrykarlrutherford/30min.'
+            },
+            {
+                keywords: ['custom', 'build', 'implementation', 'implement', 'automation', 'tools'],
+                response: 'Breakwater focuses on strategy, readiness review, audit, training, and advisory support. It can help evaluate implementation options and vendors, but it does not sell bespoke AI builds.'
+            },
+            {
+                keywords: ['audit', 'existing', 'using ai', 'roi', 'optimization'],
+                response: 'The AI audit reviews current AI usage, what is working, what is waste, ROI signals, integration fit, and practical optimization paths across the business.'
+            },
+            {
+                keywords: ['training', 'team', 'enablement', 'adoption'],
+                response: 'Breakwater provides practical AI training and change-management support tailored to the team, tools, workflows, and operating constraints.'
+            },
+            {
+                keywords: ['price', 'pricing', 'cost', 'quote'],
+                response: 'Pricing is customized by organization size, scope, and complexity. Breakwater provides transparent quotes after understanding the situation.'
+            },
+            {
+                keywords: ['what', 'services', 'do', 'offer'],
+                response: 'Breakwater offers strategic business analysis and planning, AI audit and optimization, AI training, team enablement, and ongoing advisory support.'
+            }
+        ];
+
+        function setChatbotOpen(isOpen) {
+            chatbot.dataset.open = String(isOpen);
+            chatbotToggle.setAttribute('aria-expanded', String(isOpen));
+            chatbotToggle.setAttribute('aria-label', isOpen ? 'Close Breakwater chat' : 'Open Breakwater chat');
+
+            if (isOpen) {
+                window.setTimeout(() => chatbotInput.focus(), 120);
+            }
+        }
+
+        function addChatMessage(text, sender) {
+            const message = document.createElement('div');
+            message.className = `chat-message ${sender}`;
+
+            const paragraph = document.createElement('p');
+            paragraph.textContent = text;
+            message.appendChild(paragraph);
+
+            chatbotMessages.appendChild(message);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function getFallbackResponse(message) {
+            const normalized = message.toLowerCase();
+            const match = fallbackResponses.find(item => item.keywords.some(keyword => normalized.includes(keyword)));
+
+            if (match) {
+                return match.response;
+            }
+
+            return 'The live AI chatbot is not connected yet. For now, send the business context to hello@breakwaterops.com or book a consultation through the Calendly scheduler below.';
+        }
+
+        function handleChatSubmit(message) {
+            const trimmed = message.trim();
+
+            if (!trimmed) {
+                return;
+            }
+
+            addChatMessage(trimmed, 'user');
+            chatbotInput.value = '';
+
+            window.setTimeout(() => {
+                addChatMessage(getFallbackResponse(trimmed), 'bot');
+            }, 350);
+        }
+
+        chatbotToggle.addEventListener('click', () => {
+            setChatbotOpen(chatbot.dataset.open !== 'true');
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            setChatbotOpen(false);
+        });
+
+        chatbotForm.addEventListener('submit', event => {
+            event.preventDefault();
+            handleChatSubmit(chatbotInput.value);
+        });
+
+        chatbotInput.addEventListener('keydown', event => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                chatbotForm.requestSubmit();
+            }
+        });
+
+        chatbotPrompts.forEach(prompt => {
+            prompt.addEventListener('click', () => {
+                handleChatSubmit(prompt.dataset.prompt);
+            });
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && chatbot.dataset.open === 'true') {
+                setChatbotOpen(false);
+            }
         });
     </script>
 </body>
