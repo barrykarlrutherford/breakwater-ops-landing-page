@@ -252,18 +252,18 @@
                 <button class="chatbot-close" type="button" aria-label="Close chat">×</button>
             </div>
 
-            <div class="chatbot-status">Frontend preview. Live AI responses are coming soon.</div>
+            <div class="chatbot-status">Frontend preview. For now, this assistant points visitors toward the free consultation.</div>
 
             <div class="chatbot-messages" aria-live="polite">
                 <div class="chat-message bot">
-                    <p>Hi. I can help you understand Breakwater's services, the AI audit process, and how to schedule a consultation.</p>
+                    <p>Hi. I can answer a few basics, then help you book a 30-minute Calendly consultation if Breakwater looks like a fit.</p>
                 </div>
             </div>
 
             <div class="chatbot-prompts" aria-label="Suggested questions">
+                <button type="button" data-prompt="How do I book a consultation?">Book a call</button>
                 <button type="button" data-prompt="What does Breakwater do?">What do you do?</button>
                 <button type="button" data-prompt="Do you build custom AI tools?">Custom AI?</button>
-                <button type="button" data-prompt="How do I book a consultation?">Book a call</button>
             </div>
 
             <form class="chatbot-form">
@@ -342,27 +342,27 @@
         const fallbackResponses = [
             {
                 keywords: ['book', 'call', 'consult', 'schedule', 'meeting'],
-                response: 'You can book a 30-minute consultation with Barry through the scheduler in the contact section. The direct link is https://calendly.com/barrykarlrutherford/30min.'
+                response: 'The best next step is a 30-minute consultation with Barry. Use the Calendly scheduler in the contact section, or open it directly here: https://calendly.com/barrykarlrutherford/30min.'
             },
             {
                 keywords: ['custom', 'build', 'implementation', 'implement', 'automation', 'tools'],
-                response: 'Breakwater focuses on strategy, readiness review, audit, training, and advisory support. It can help evaluate implementation options and vendors, but it does not sell bespoke AI builds.'
+                response: 'Breakwater focuses on strategy, readiness review, audit, training, and advisory support. It can help evaluate implementation options and vendors, but it does not sell bespoke AI builds. A consultation is the right place to sort out what should or should not be built: https://calendly.com/barrykarlrutherford/30min.'
             },
             {
                 keywords: ['audit', 'existing', 'using ai', 'roi', 'optimization'],
-                response: 'The AI audit reviews current AI usage, what is working, what is waste, ROI signals, integration fit, and practical optimization paths across the business.'
+                response: 'The AI audit reviews current AI usage, what is working, what is waste, ROI signals, integration fit, and practical optimization paths. To see whether an audit makes sense, book the 30-minute consultation: https://calendly.com/barrykarlrutherford/30min.'
             },
             {
                 keywords: ['training', 'team', 'enablement', 'adoption'],
-                response: 'Breakwater provides practical AI training and change-management support tailored to the team, tools, workflows, and operating constraints.'
+                response: 'Breakwater provides practical AI training and change-management support tailored to the team, tools, workflows, and operating constraints. A short consultation is the fastest way to scope that need: https://calendly.com/barrykarlrutherford/30min.'
             },
             {
                 keywords: ['price', 'pricing', 'cost', 'quote'],
-                response: 'Pricing is customized by organization size, scope, and complexity. Breakwater provides transparent quotes after understanding the situation.'
+                response: 'Pricing is customized by organization size, scope, and complexity. Breakwater provides transparent quotes after understanding the situation, so the next step is a 30-minute consultation: https://calendly.com/barrykarlrutherford/30min.'
             },
             {
                 keywords: ['what', 'services', 'do', 'offer'],
-                response: 'Breakwater offers strategic business analysis and planning, AI audit and optimization, AI training, team enablement, and ongoing advisory support.'
+                response: 'Breakwater offers strategic business analysis and planning, AI audit and optimization, AI training, team enablement, and ongoing advisory support. If one of those sounds relevant, book a 30-minute consultation here: https://calendly.com/barrykarlrutherford/30min.'
             }
         ];
 
@@ -396,7 +396,7 @@
                 return match.response;
             }
 
-            return 'The live AI chatbot is not connected yet. For now, send the business context to hello@breakwaterops.com or book a consultation through the Calendly scheduler below.';
+            return 'The live AI chatbot is not connected yet. The most useful next step is to book a 30-minute consultation through Calendly: https://calendly.com/barrykarlrutherford/30min.';
         }
 
         function handleChatSubmit(message) {
