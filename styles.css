@@ -211,6 +211,13 @@ section {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.calendly-inline-widget {
+    margin-top: 34px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #fff;
+}
+
 .hero {
     padding: 104px 0 88px;
     background: linear-gradient(135deg, #1d3548, #287271);
