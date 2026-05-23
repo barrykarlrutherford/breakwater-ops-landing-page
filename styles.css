@@ -620,6 +620,11 @@ p {
     background: var(--soft);
 }
 
+.chat-message.pending p {
+    letter-spacing: 2px;
+    animation: pulseText 1s ease-in-out infinite;
+}
+
 .chat-message.user {
     align-self: flex-end;
     color: #fff;
@@ -666,6 +671,11 @@ p {
     line-height: 1.35;
 }
 
+.chatbot-form textarea:disabled {
+    color: var(--muted);
+    background: var(--soft);
+}
+
 .chatbot-form button {
     min-height: 44px;
     padding: 0 15px;
@@ -675,6 +685,17 @@ p {
     background: var(--teal);
     font-weight: 800;
     cursor: pointer;
+}
+
+@keyframes pulseText {
+    0%,
+    100% {
+        opacity: 0.45;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 .footer {
