@@ -345,27 +345,27 @@
         const fallbackResponses = [
             {
                 keywords: ['book', 'call', 'consult', 'schedule', 'meeting'],
-                response: `Best next step: ${contactLink}. Barry will use the call to understand your situation, confirm fit, and outline practical next steps.`
+                response: `Best next step: ${contactLink}. Barry will confirm fit and outline what to do next.`
             },
             {
                 keywords: ['custom', 'build', 'implementation', 'implement', 'automation', 'tools'],
-                response: `Breakwater does not sell custom AI builds. It helps decide what should be built, bought, avoided, or audited first. To scope that decision, ${contactLink}.`
+                response: `Breakwater does not build custom AI tools. It helps decide what to build, buy, avoid, or audit. To scope that, ${contactLink}.`
             },
             {
                 keywords: ['audit', 'existing', 'using ai', 'roi', 'optimization'],
-                response: `Yes. An AI audit identifies what is working, what is waste, where risk sits, and where ROI may be hiding. To confirm scope, ${contactLink}.`
+                response: `Yes. An audit finds what works, what wastes money, and where risk sits. To scope it, ${contactLink}.`
             },
             {
                 keywords: ['training', 'team', 'enablement', 'adoption'],
-                response: `Breakwater can train teams around real workflows, not generic AI demos. The goal is useful adoption with guardrails. To shape the right session, ${contactLink}.`
+                response: `Yes. Breakwater trains teams around real workflows, not generic AI demos. To shape the session, ${contactLink}.`
             },
             {
                 keywords: ['price', 'pricing', 'cost', 'quote'],
-                response: `Pricing depends on scope, organization size, and complexity. The consultation is where Breakwater defines the need and gives a transparent next step. You can ${contactLink}.`
+                response: `Pricing depends on scope and complexity. The consultation defines the need and next step. You can ${contactLink}.`
             },
             {
                 keywords: ['what', 'services', 'do', 'offer'],
-                response: `Breakwater helps assess AI fit, audit current use, train teams, and shape practical advisory plans. If you need clarity before spending money on AI, ${contactLink}.`
+                response: `Breakwater assesses AI fit, audits usage, trains teams, and shapes advisory plans. Need clarity before spending? ${contactLink}.`
             }
         ];
 
@@ -442,7 +442,7 @@
                 return match.response;
             }
 
-            return `I can help with fit, scope, audit, training, or next steps. The fastest path is to ${contactLink}.`;
+            return `I can help with fit, scope, audit, or training. Fastest path: ${contactLink}.`;
         }
 
         async function fetchChatbotReply(message) {
