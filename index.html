@@ -341,6 +341,7 @@
         const chatbotApiUrl = '/api/chat';
         const chatHistory = [];
         const contactLink = '[book a consultation](#contact)';
+        const root = document.documentElement;
 
         const fallbackResponses = [
             {
@@ -377,6 +378,16 @@
             if (isOpen && shouldFocus) {
                 window.setTimeout(() => chatbotInput.focus(), 120);
             }
+        }
+
+        function updateChatbotViewport() {
+            const viewport = window.visualViewport;
+            const viewportHeight = viewport ? viewport.height : window.innerHeight;
+            const viewportOffsetTop = viewport ? viewport.offsetTop : 0;
+            const keyboardOffset = Math.max(0, window.innerHeight - viewportHeight - viewportOffsetTop);
+
+            root.style.setProperty('--chatbot-viewport-height', `${Math.round(viewportHeight)}px`);
+            root.style.setProperty('--chatbot-keyboard-offset', `${Math.round(keyboardOffset)}px`);
         }
 
         function renderChatContent(paragraph, text, shouldRenderLinks) {
@@ -530,6 +541,15 @@
         window.setTimeout(() => {
             setChatbotOpen(true, false);
         }, 900);
+
+        updateChatbotViewport();
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', updateChatbotViewport);
+            window.visualViewport.addEventListener('scroll', updateChatbotViewport);
+        }
+
+        window.addEventListener('resize', updateChatbotViewport);
     </script>
 </body>
 </html>

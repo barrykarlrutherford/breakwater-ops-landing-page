@@ -12,6 +12,8 @@
     --navy: #1d3548;
     --teal: #287271;
     --gold: #b7791f;
+    --chatbot-viewport-height: 100vh;
+    --chatbot-keyboard-offset: 0px;
 }
 
 html {
@@ -470,7 +472,7 @@ p {
 .chatbot {
     position: fixed;
     right: 24px;
-    bottom: 24px;
+    bottom: calc(24px + var(--chatbot-keyboard-offset));
     z-index: 30;
 }
 
@@ -531,7 +533,7 @@ p {
     display: flex;
     flex-direction: column;
     width: min(380px, calc(100vw - 40px));
-    height: min(620px, calc(100vh - 120px));
+    height: min(620px, max(260px, calc(var(--chatbot-viewport-height) - 120px)));
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -790,12 +792,12 @@ p {
 
     .chatbot {
         right: 16px;
-        bottom: 16px;
+        bottom: calc(16px + var(--chatbot-keyboard-offset));
     }
 
     .chatbot-panel {
         bottom: 68px;
         width: calc(100vw - 32px);
-        height: min(580px, calc(100vh - 100px));
+        height: min(580px, max(220px, calc(var(--chatbot-viewport-height) - 96px)));
     }
 }
