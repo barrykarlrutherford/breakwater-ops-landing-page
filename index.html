@@ -385,9 +385,11 @@
             const viewportHeight = viewport ? viewport.height : window.innerHeight;
             const viewportOffsetTop = viewport ? viewport.offsetTop : 0;
             const keyboardOffset = Math.max(0, window.innerHeight - viewportHeight - viewportOffsetTop);
+            const keyboardIsOpen = keyboardOffset > 80;
 
             root.style.setProperty('--chatbot-viewport-height', `${Math.round(viewportHeight)}px`);
             root.style.setProperty('--chatbot-keyboard-offset', `${Math.round(keyboardOffset)}px`);
+            chatbot.dataset.keyboardOpen = String(keyboardIsOpen);
         }
 
         function renderChatContent(paragraph, text, shouldRenderLinks) {

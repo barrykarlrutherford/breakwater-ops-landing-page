@@ -489,6 +489,7 @@ p {
     background: var(--teal);
     box-shadow: 0 16px 34px rgba(23, 32, 42, 0.24);
     cursor: pointer;
+    transition: opacity 0.16s ease, transform 0.16s ease;
 }
 
 .chatbot-toggle-icon {
@@ -799,5 +800,16 @@ p {
         bottom: 68px;
         width: calc(100vw - 32px);
         height: min(580px, max(220px, calc(var(--chatbot-viewport-height) - 96px)));
+    }
+
+    .chatbot[data-keyboard-open="true"] .chatbot-toggle {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(24px);
+    }
+
+    .chatbot[data-keyboard-open="true"] .chatbot-panel {
+        bottom: 0;
+        height: min(580px, max(240px, calc(var(--chatbot-viewport-height) - 28px)));
     }
 }
