@@ -7,7 +7,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-nano';
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
 const PUBLIC_DIR = process.cwd();
-const CALENDLY_URL = 'https://calendly.com/barrykarlrutherford/30min';
+const CONTACT_SECTION_LINK = '[book a consultation](#contact)';
 
 const mimeTypes = {
     '.html': 'text/html; charset=utf-8',
@@ -35,7 +35,8 @@ Behavior:
 - Keep responses under 90 words unless the user asks for detail.
 - Be direct, grounded, and calm.
 - Do not pretend to schedule the appointment yourself.
-- When appropriate, point users to this Calendly link: ${CALENDLY_URL}
+- When appropriate, use exactly this concise Markdown link: ${CONTACT_SECTION_LINK}
+- Do not write out the raw Calendly URL.
 - If the user asks for medical, legal, financial, or emergency advice, say Breakwater cannot advise on that and suggest a qualified professional.
 `;
 
@@ -61,7 +62,7 @@ function getResponseText(data) {
         ?.join('\n')
         ?.trim();
 
-    return text || `I can help with a few basics, but the best next step is a 30-minute consultation: ${CALENDLY_URL}`;
+    return text || `I can help with a few basics, but the best next step is to ${CONTACT_SECTION_LINK}.`;
 }
 
 async function readRequestJson(request) {

@@ -614,6 +614,13 @@ p {
     margin: 0;
 }
 
+.chat-message a {
+    color: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 .chat-message.bot {
     align-self: flex-start;
     color: var(--ink);

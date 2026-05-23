@@ -340,31 +340,32 @@
         const chatbotPrompts = document.querySelectorAll('.chatbot-prompts button');
         const chatbotApiUrl = '/api/chat';
         const chatHistory = [];
+        const contactLink = '[book a consultation](#contact)';
 
         const fallbackResponses = [
             {
                 keywords: ['book', 'call', 'consult', 'schedule', 'meeting'],
-                response: 'The best next step is a 30-minute consultation with Barry. Use the Calendly scheduler in the contact section, or open it directly here: https://calendly.com/barrykarlrutherford/30min.'
+                response: `The best next step is a 30-minute consultation with Barry. You can ${contactLink} through the scheduler on this page.`
             },
             {
                 keywords: ['custom', 'build', 'implementation', 'implement', 'automation', 'tools'],
-                response: 'Breakwater focuses on strategy, readiness review, audit, training, and advisory support. It can help evaluate implementation options and vendors, but it does not sell bespoke AI builds. A consultation is the right place to sort out what should or should not be built: https://calendly.com/barrykarlrutherford/30min.'
+                response: `Breakwater focuses on strategy, readiness review, audit, training, and advisory support. It does not sell bespoke AI builds. A consultation is the right place to sort out what should or should not be built, so you can ${contactLink}.`
             },
             {
                 keywords: ['audit', 'existing', 'using ai', 'roi', 'optimization'],
-                response: 'The AI audit reviews current AI usage, what is working, what is waste, ROI signals, integration fit, and practical optimization paths. To see whether an audit makes sense, book the 30-minute consultation: https://calendly.com/barrykarlrutherford/30min.'
+                response: `The AI audit reviews current AI usage, what is working, what is waste, ROI signals, integration fit, and practical optimization paths. To see whether an audit makes sense, ${contactLink}.`
             },
             {
                 keywords: ['training', 'team', 'enablement', 'adoption'],
-                response: 'Breakwater provides practical AI training and change-management support tailored to the team, tools, workflows, and operating constraints. A short consultation is the fastest way to scope that need: https://calendly.com/barrykarlrutherford/30min.'
+                response: `Breakwater provides practical AI training and change-management support tailored to the team, tools, workflows, and operating constraints. A short consultation is the fastest way to scope that need, so you can ${contactLink}.`
             },
             {
                 keywords: ['price', 'pricing', 'cost', 'quote'],
-                response: 'Pricing is customized by organization size, scope, and complexity. Breakwater provides transparent quotes after understanding the situation, so the next step is a 30-minute consultation: https://calendly.com/barrykarlrutherford/30min.'
+                response: `Pricing is customized by organization size, scope, and complexity. Breakwater provides transparent quotes after understanding the situation, so the next step is to ${contactLink}.`
             },
             {
                 keywords: ['what', 'services', 'do', 'offer'],
-                response: 'Breakwater offers strategic business analysis and planning, AI audit and optimization, AI training, team enablement, and ongoing advisory support. If one of those sounds relevant, book a 30-minute consultation here: https://calendly.com/barrykarlrutherford/30min.'
+                response: `Breakwater offers strategic business analysis and planning, AI audit and optimization, AI training, team enablement, and ongoing advisory support. If one of those sounds relevant, ${contactLink}.`
             }
         ];
 
@@ -378,6 +379,43 @@
             }
         }
 
+        function renderChatContent(paragraph, text, shouldRenderLinks) {
+            paragraph.textContent = '';
+
+            if (!shouldRenderLinks) {
+                paragraph.textContent = text;
+                return;
+            }
+
+            const linkPattern = /\[([^\]]+)\]\((#[^)]+|https?:\/\/[^)]+)\)/g;
+            let lastIndex = 0;
+            let match;
+
+            while ((match = linkPattern.exec(text)) !== null) {
+                paragraph.append(document.createTextNode(text.slice(lastIndex, match.index)));
+
+                const link = document.createElement('a');
+                link.href = match[2];
+                link.textContent = match[1];
+
+                if (match[2].startsWith('#')) {
+                    link.addEventListener('click', () => setChatbotOpen(false));
+                } else {
+                    link.target = '_blank';
+                    link.rel = 'noopener';
+                }
+
+                paragraph.append(link);
+                lastIndex = linkPattern.lastIndex;
+            }
+
+            paragraph.append(document.createTextNode(text.slice(lastIndex)));
+        }
+
+        function updateChatMessage(message, text, sender) {
+            renderChatContent(message.querySelector('p'), text, sender === 'bot');
+        }
+
         function addChatMessage(text, sender, options = {}) {
             const message = document.createElement('div');
             message.className = `chat-message ${sender}`;
@@ -387,7 +425,7 @@
             }
 
             const paragraph = document.createElement('p');
-            paragraph.textContent = text;
+            renderChatContent(paragraph, text, sender === 'bot');
             message.appendChild(paragraph);
 
             chatbotMessages.appendChild(message);
@@ -404,7 +442,7 @@
                 return match.response;
             }
 
-            return 'The live AI chatbot is not available right now. The most useful next step is to book a 30-minute consultation through Calendly: https://calendly.com/barrykarlrutherford/30min.';
+            return `The live AI chatbot is not available right now. The most useful next step is to ${contactLink}.`;
         }
 
         async function fetchChatbotReply(message) {
@@ -443,12 +481,12 @@
 
             try {
                 const reply = await fetchChatbotReply(trimmed);
-                pendingMessage.querySelector('p').textContent = reply;
+                updateChatMessage(pendingMessage, reply, 'bot');
                 chatHistory.push({ role: 'assistant', content: reply });
             } catch (error) {
                 const fallbackReply = getFallbackResponse(trimmed);
                 console.error(error);
-                pendingMessage.querySelector('p').textContent = fallbackReply;
+                updateChatMessage(pendingMessage, fallbackReply, 'bot');
                 chatHistory.push({ role: 'assistant', content: fallbackReply });
             } finally {
                 pendingMessage.classList.remove('pending');
