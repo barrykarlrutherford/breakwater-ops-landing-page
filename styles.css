@@ -595,6 +595,10 @@ p {
     font-size: 1.05rem;
 }
 
+.industry-focus-item strong a {
+    color: inherit;
+}
+
 .industry-focus-item svg {
     width: 22px;
     height: 22px;
@@ -737,6 +741,92 @@ p {
 .approach-point p {
     margin-bottom: 0;
     color: var(--muted);
+}
+
+.nonprofit-hero {
+    border-bottom: 6px solid var(--gold);
+}
+
+.nonprofit-context {
+    padding-bottom: 72px;
+}
+
+.context-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 38px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.context-item {
+    min-height: 190px;
+    padding: 28px 24px;
+    border-right: 1px solid var(--line);
+}
+
+.context-item:last-child {
+    border-right: 0;
+}
+
+.context-item svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 30px;
+    color: var(--teal);
+}
+
+.context-item strong,
+.context-item span {
+    display: block;
+}
+
+.context-item strong {
+    margin-bottom: 8px;
+    color: var(--navy);
+}
+
+.context-item span {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.nonprofit-challenges .service-card {
+    min-height: 235px;
+}
+
+.nonprofit-challenges .service-card p {
+    margin-bottom: 0;
+    color: var(--muted);
+}
+
+.nonprofit-audit {
+    background: var(--paper);
+}
+
+.nonprofit-outcomes .implementation-route {
+    min-height: 205px;
+}
+
+.fit-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    gap: 36px;
+    align-items: start;
+    margin-top: 36px;
+}
+
+.fit-copy {
+    display: grid;
+    gap: 28px;
+}
+
+.nonprofit-services .service-card > p:not(.tagline) {
+    color: var(--muted);
+}
+
+.nonprofit-contact {
+    border-top: 6px solid var(--gold);
 }
 
 .team-grid {
@@ -1070,8 +1160,25 @@ p {
     .audit-overview,
     .industry-focus,
     .implementation-heading,
-    .provider-guidance {
+    .provider-guidance,
+    .fit-grid {
         grid-template-columns: 1fr;
+    }
+
+    .context-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .context-item {
+        border-bottom: 1px solid var(--line);
+    }
+
+    .context-item:nth-child(even) {
+        border-right: 0;
+    }
+
+    .context-item:nth-last-child(-n + 2) {
+        border-bottom: 0;
     }
 
     .audit-column,
@@ -1161,7 +1268,8 @@ p {
 
 @media (max-width: 600px) {
     .audit-process,
-    .implementation-routes {
+    .implementation-routes,
+    .context-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1176,4 +1284,22 @@ p {
     .implementation-route > span {
         margin-bottom: 18px;
     }
+
+    .context-item,
+    .context-item:nth-child(even),
+    .context-item:nth-last-child(-n + 2) {
+        min-height: 0;
+        padding: 24px 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .context-item:last-child {
+        border-bottom: 0;
+    }
+
+    .context-item svg {
+        margin-bottom: 16px;
+    }
+
 }

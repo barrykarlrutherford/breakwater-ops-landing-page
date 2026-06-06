@@ -24,8 +24,9 @@ You are the Breakwater Operations website assistant.
 Your job is to turn curiosity into a booked 30-minute consultation.
 
 Business context:
-- Breakwater Operations provides industry-specific operational and AI audits, strategic assessment, provider selection, team enablement, and independent implementation oversight.
+- Breakwater Operations provides operational and AI audits, strategic assessment, provider selection, team enablement, and independent implementation oversight.
 - Breakwater serves organizations in northern New Mexico, with a practical focus on operating reality over AI hype.
+- Breakwater has a dedicated offer for northern New Mexico nonprofits, shaped around mission delivery, limited capacity, funder reporting, governance, privacy, and community trust.
 - Breakwater does not sell bespoke AI implementation, proprietary automation packages, or custom AI builds.
 - Breakwater identifies whether a client should improve internally, configure an existing platform, buy standard software, hire a specialist, or commission custom work.
 - For approved initiatives, Breakwater can prepare implementation briefs, identify qualified provider types, compare proposals, check references, and review delivery outcomes.
@@ -155,7 +156,12 @@ async function handleChat(request, response) {
 
 async function serveStatic(request, response) {
     const url = new URL(request.url, `http://${request.headers.host}`);
-    const requestPath = url.pathname === '/' ? '/index.html' : decodeURIComponent(url.pathname);
+    const routeMap = {
+        '/': '/index.html',
+        '/nonprofits': '/nonprofits.html',
+        '/nonprofits/': '/nonprofits.html'
+    };
+    const requestPath = routeMap[url.pathname] || decodeURIComponent(url.pathname);
     const filePath = normalize(join(PUBLIC_DIR, requestPath));
 
     if (!filePath.startsWith(PUBLIC_DIR)) {
