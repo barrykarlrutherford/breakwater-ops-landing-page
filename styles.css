@@ -595,10 +595,6 @@ p {
     font-size: 1.05rem;
 }
 
-.industry-focus-item strong a {
-    color: inherit;
-}
-
 .industry-focus-item svg {
     width: 22px;
     height: 22px;
