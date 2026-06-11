@@ -347,6 +347,83 @@
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.scrollY > 50);
         });
+
+        // Scroll Reveal Animations
+        document.documentElement.classList.add('js-enabled');
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealTargets = [];
+
+            const sections = document.querySelectorAll('section, header, footer');
+            sections.forEach(section => {
+                // Kickers get delay 0ms
+                section.querySelectorAll('.section-kicker, .hero-kicker').forEach(el => {
+                    el.classList.add('reveal-el');
+                    el.style.transitionDelay = '0ms';
+                    revealTargets.push(el);
+                });
+
+                // Headings (h1, h2) get delay 100ms
+                section.querySelectorAll('h1, h2').forEach(el => {
+                    el.classList.add('reveal-el');
+                    el.style.transitionDelay = '100ms';
+                    revealTargets.push(el);
+                });
+
+                // Subtitles, intros, and general h3 get delay 200ms
+                section.querySelectorAll('.section-intro, .hero-subtitle, .hero-proof, h3').forEach(el => {
+                    // Do not apply transition to child headings in card components to prevent double-animating
+                    if (el.closest('.differentiator-item') || el.closest('.process-step') || el.closest('.industry-focus-item') || el.closest('.service-card') || el.closest('.team-card') || el.closest('.context-item') || el.closest('.implementation-route') || el.closest('.fit-card')) {
+                        return;
+                    }
+                    el.classList.add('reveal-el');
+                    el.style.transitionDelay = '200ms';
+                    revealTargets.push(el);
+                });
+
+                // Hero CTA buttons get delay 300ms
+                section.querySelectorAll('.hero-cta').forEach(el => {
+                    el.classList.add('reveal-el');
+                    el.style.transitionDelay = '300ms';
+                    revealTargets.push(el);
+                });
+
+                // Grids and list parent containers - stagger their children starting at 250ms or 300ms
+                const grids = section.querySelectorAll('.differentiator-grid, .audit-overview, .industry-focus-grid, .audit-process, .services-grid, .team-grid, .contact-grid, .context-grid, .implementation-routes, .fit-grid');
+                grids.forEach(grid => {
+                    const items = grid.querySelectorAll('.differentiator-item, .audit-column, .industry-focus-item, .process-step, .service-card, .team-card, .contact-info, .contact-form-wrapper, .context-item, .implementation-route, .fit-card');
+                    items.forEach((item, idx) => {
+                        item.classList.add('reveal-el');
+                        item.style.transitionDelay = `${250 + idx * 80}ms`;
+                        revealTargets.push(item);
+                    });
+                });
+
+                // Blog callout elements
+                section.querySelectorAll('.blog-callout-content').forEach(el => {
+                    el.classList.add('reveal-el');
+                    el.style.transitionDelay = '250ms';
+                    revealTargets.push(el);
+                });
+            });
+
+            // Intersection Observer
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -80px 0px',
+                threshold: 0.05
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            revealTargets.forEach(el => observer.observe(el));
+        });
     </script>
 </body>
 </html>

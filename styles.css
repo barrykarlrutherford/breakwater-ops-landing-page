@@ -1330,3 +1330,27 @@ p {
     }
 
 }
+
+/* Scroll Reveal & Pop-in Animations */
+.js-enabled .reveal-el {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    transition: 
+        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+        transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.12);
+    will-change: opacity, transform;
+}
+
+.js-enabled .reveal-el.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js-enabled .reveal-el {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
