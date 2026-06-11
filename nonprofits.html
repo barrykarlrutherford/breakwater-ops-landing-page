@@ -315,7 +315,19 @@
                 <p>&copy; 2026 Breakwater Operations. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    <!-- Blog Coming Soon Modal -->
+    <div id="blog-modal" class="modal" aria-hidden="true">
+        <div class="modal-overlay" tabindex="-1" data-close></div>
+        <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" aria-label="Close modal" data-close>&times;</button>
+            <p class="section-kicker">Coming Soon</p>
+            <h3 id="modal-title">The Breakwater Blog</h3>
+            <p class="modal-text">We are preparing practical writing on operations, AI assessment, vendor selection, and the hard choices leaders need to make before buying tools.</p>
+            <div class="modal-cta">
+                <button class="button-primary" data-close>Got It</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/lucide@1.17.0"></script>
     <script>
@@ -423,6 +435,37 @@
             }, observerOptions);
 
             revealTargets.forEach(el => observer.observe(el));
+
+            // Blog Modal Handler
+            const blogModal = document.getElementById('blog-modal');
+            const blogLinks = document.querySelectorAll('a[href*="blog.breakwaterops.com"]');
+            
+            const openModal = (e) => {
+                e.preventDefault();
+                blogModal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+                const closeBtn = blogModal.querySelector('.modal-close');
+                if (closeBtn) closeBtn.focus();
+            };
+
+            const closeModal = () => {
+                blogModal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            };
+
+            blogLinks.forEach(link => {
+                link.addEventListener('click', openModal);
+            });
+
+            blogModal.querySelectorAll('[data-close]').forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && blogModal.getAttribute('aria-hidden') === 'false') {
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>
