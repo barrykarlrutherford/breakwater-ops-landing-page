@@ -44,9 +44,9 @@ Use these values in Ghost so the transition from the main site feels consistent:
 
 ## Code Injection
 
-The code below inserts the same header and footer markup used by the homepage and hides the Ghost theme's native header and footer. The custom components use `bw-` class names so Ghost theme styles do not alter their layout.
+The code below inserts the same header and footer used by the homepage and hides the Ghost theme's native versions.
 
-Go to **Settings** -> **Advanced** -> **Code injection** in Ghost Admin and paste the following code snippets.
+Go to **Settings** -> **Advanced** -> **Code injection** in Ghost Admin. Delete the existing contents of both code-injection boxes before pasting these replacements. The header is fully contained in the Site Header box; it no longer depends on the Site Footer script.
 
 ### Site Header Injection
 
@@ -59,21 +59,19 @@ Paste this block into the **Site Header** box:
 
 <style>
     :root {
-        --bw-ink: #17202a;
-        --bw-muted: #53616f;
-        --bw-line: #d9e0e6;
-        --bw-paper: #ffffff;
-        --bw-logo-bg: #fcfaf7;
-        --bw-navy: #1d3548;
-        --bw-teal: #287271;
-        --ghost-accent-color: var(--bw-teal);
+        --color-ink: #17202a;
+        --color-muted: #53616f;
+        --color-paper: #ffffff;
+        --color-navy: #1d3548;
+        --color-teal: #287271;
+        --ghost-accent-color: var(--color-teal);
     }
 
     body,
     .gh-body,
     .gh-content {
         font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--bw-ink);
+        color: var(--color-ink);
     }
 
     .site-content p,
@@ -85,7 +83,7 @@ Paste this block into the **Site Header** box:
     .gh-body,
     .gh-content {
         font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        color: var(--bw-ink) !important;
+        color: var(--color-ink) !important;
         line-height: 1.6 !important;
     }
 
@@ -100,17 +98,17 @@ Paste this block into the **Site Header** box:
     .site-title,
     .gh-header h1 {
         font-family: "Playfair Display", Georgia, serif;
-        color: var(--bw-navy);
+        color: var(--color-navy);
         font-weight: 700;
     }
 
     .site-content a {
-        color: var(--bw-teal);
+        color: var(--color-teal);
         transition: color 0.2s ease, text-decoration 0.2s ease;
     }
 
     .site-content a:hover {
-        color: var(--bw-navy);
+        color: var(--color-navy);
         text-decoration: underline;
     }
 
@@ -126,7 +124,7 @@ Paste this block into the **Site Header** box:
 
     .gh-card-excerpt,
     .post-excerpt {
-        color: var(--bw-muted) !important;
+        color: var(--color-muted) !important;
         font-size: 0.95rem !important;
     }
 
@@ -138,8 +136,8 @@ Paste this block into the **Site Header** box:
     .site-content input[type="submit"] {
         border: 0 !important;
         border-radius: 6px !important;
-        color: var(--bw-paper) !important;
-        background: var(--bw-teal) !important;
+        color: var(--color-paper) !important;
+        background: var(--color-teal) !important;
         font-family: "Plus Jakarta Sans", sans-serif !important;
         font-weight: 600 !important;
         transition: background-color 0.2s ease, transform 0.2s ease !important;
@@ -150,172 +148,345 @@ Paste this block into the **Site Header** box:
     .site-content .btn:hover,
     .site-content .gh-signup-btn:hover,
     .site-content input[type="submit"]:hover {
-        color: var(--bw-paper) !important;
-        background: var(--bw-navy) !important;
+        color: var(--color-paper) !important;
+        background: var(--color-navy) !important;
     }
 
-    /* Prevent the native theme chrome from appearing before JavaScript runs. */
+    /* Hide Rand's header and any header left by the previous injection. */
     .gh-head,
     .site-header,
+    #bw-header {
+        display: none !important;
+    }
+</style>
+
+<script>
+    (() => {
+        const elementName = "breakwater-site-header";
+
+        if (!customElements.get(elementName)) {
+            class BreakwaterSiteHeader extends HTMLElement {
+                connectedCallback() {
+                    if (this.shadowRoot) {
+                        return;
+                    }
+
+                    const root = this.attachShadow({ mode: "open" });
+                    root.innerHTML = `
+                        <style>
+                            * {
+                                box-sizing: border-box;
+                            }
+
+                            :host {
+                                position: sticky;
+                                top: 0;
+                                z-index: 10;
+                                display: block;
+                                color: #17202a;
+                                font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                                font-size: 16px;
+                                line-height: 1.6;
+                            }
+
+                            a {
+                                color: #287271;
+                                text-decoration: none;
+                            }
+
+                            a:hover {
+                                text-decoration: underline;
+                            }
+
+                            .container {
+                                width: min(1120px, calc(100% - 40px));
+                                margin: 0 auto;
+                            }
+
+                            .nav {
+                                position: relative;
+                                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                                background: #fcfaf7;
+                                backdrop-filter: blur(12px);
+                                transition: all 0.3s ease-in-out;
+                            }
+
+                            .nav .container {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                gap: 24px;
+                                min-height: 120px;
+                                padding: 10px 0;
+                                transition: all 0.3s ease-in-out;
+                            }
+
+                            .nav.scrolled {
+                                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                                background: #fcfaf7;
+                            }
+
+                            .nav.scrolled .container {
+                                min-height: 80px;
+                            }
+
+                            .menu-toggle {
+                                z-index: 20;
+                                display: none;
+                                padding: 10px;
+                                border: 0;
+                                background: transparent;
+                                cursor: pointer;
+                            }
+
+                            .hamburger {
+                                position: relative;
+                                display: block;
+                                width: 24px;
+                                height: 2px;
+                                background: #17202a;
+                                transition: background 0.2s ease-out;
+                            }
+
+                            .hamburger::before,
+                            .hamburger::after {
+                                position: absolute;
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                background: #17202a;
+                                content: "";
+                                transition: all 0.2s ease-out;
+                            }
+
+                            .hamburger::before {
+                                top: 8px;
+                            }
+
+                            .hamburger::after {
+                                bottom: 8px;
+                            }
+
+                            .menu-toggle.active .hamburger {
+                                background: transparent;
+                            }
+
+                            .menu-toggle.active .hamburger::before {
+                                top: 0;
+                                transform: rotate(45deg);
+                            }
+
+                            .menu-toggle.active .hamburger::after {
+                                bottom: 0;
+                                transform: rotate(-45deg);
+                            }
+
+                            .logo {
+                                display: flex;
+                                align-items: center;
+                                max-height: 160px;
+                            }
+
+                            .logo img {
+                                display: block;
+                                width: auto;
+                                height: 160px;
+                                max-width: 100%;
+                                object-fit: contain;
+                                transition: all 0.3s ease-in-out;
+                            }
+
+                            .nav.scrolled .logo img {
+                                height: 90px;
+                            }
+
+                            .nav-links {
+                                display: flex;
+                                align-items: center;
+                                flex-wrap: wrap;
+                                gap: 18px;
+                            }
+
+                            .nav-links a {
+                                color: #17202a;
+                                font-size: 0.92em;
+                                font-weight: 600;
+                            }
+
+                            .nav-links a.cta-button {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                min-height: 40px;
+                                padding: 8px 20px;
+                                border: 1px solid transparent;
+                                border-radius: 6px;
+                                color: #fff;
+                                background: #287271;
+                                font-weight: 700;
+                                line-height: 1.2;
+                            }
+
+                            @media (max-width: 960px) {
+                                .nav .container {
+                                    min-height: 80px;
+                                }
+
+                                .logo {
+                                    max-height: 100px;
+                                }
+
+                                .menu-toggle {
+                                    display: block;
+                                }
+
+                                .nav-links {
+                                    position: absolute;
+                                    top: 100%;
+                                    right: 0;
+                                    left: 0;
+                                    display: none;
+                                    flex-direction: column;
+                                    gap: 24px;
+                                    padding: 40px;
+                                    border-bottom: 1px solid #d9e0e6;
+                                    background: #fcfaf7;
+                                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                                }
+
+                                .nav-links.active {
+                                    display: flex;
+                                }
+
+                                .nav-links a {
+                                    width: 100%;
+                                    font-size: 1.2em;
+                                    text-align: center;
+                                }
+
+                                .logo img {
+                                    height: 120px;
+                                }
+                            }
+                        </style>
+
+                        <nav class="nav" aria-label="Main navigation">
+                            <div class="container">
+                                <a href="https://breakwaterops.com/" class="logo">
+                                    <img src="https://breakwaterops.com/images/breakwater-logo.png" alt="Breakwater Operations">
+                                </a>
+                                <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+                                    <span class="hamburger"></span>
+                                </button>
+                                <div class="nav-links">
+                                    <a href="https://breakwaterops.com/#how-we-help">How We Help</a>
+                                    <a href="https://breakwaterops.com/#services">Services</a>
+                                    <a href="https://breakwaterops.com/#approach">Approach</a>
+                                    <a href="https://breakwaterops.com/#team">Team</a>
+                                    <a href="https://blog.breakwaterops.com">Blog</a>
+                                    <a href="https://breakwaterops.com/#contact" class="cta-button">Get Started</a>
+                                </div>
+                            </div>
+                        </nav>
+                    `;
+
+                    this.nav = root.querySelector(".nav");
+                    this.menuToggle = root.querySelector(".menu-toggle");
+                    this.navLinks = root.querySelector(".nav-links");
+
+                    this.closeMenu = () => {
+                        this.menuToggle.classList.remove("active");
+                        this.navLinks.classList.remove("active");
+                        this.menuToggle.setAttribute("aria-expanded", "false");
+                    };
+
+                    this.handleScroll = () => {
+                        this.nav.classList.toggle("scrolled", window.scrollY > 50);
+                    };
+
+                    this.handleResize = () => {
+                        if (window.innerWidth > 960) {
+                            this.closeMenu();
+                        }
+                    };
+
+                    this.menuToggle.addEventListener("click", () => {
+                        const isOpen = this.navLinks.classList.toggle("active");
+                        this.menuToggle.classList.toggle("active", isOpen);
+                        this.menuToggle.setAttribute("aria-expanded", String(isOpen));
+                    });
+
+                    this.navLinks.querySelectorAll("a").forEach((link) => {
+                        link.addEventListener("click", this.closeMenu);
+                    });
+
+                    window.addEventListener("scroll", this.handleScroll);
+                    window.addEventListener("resize", this.handleResize);
+                    this.handleScroll();
+                }
+
+                disconnectedCallback() {
+                    window.removeEventListener("scroll", this.handleScroll);
+                    window.removeEventListener("resize", this.handleResize);
+                }
+            }
+
+            customElements.define(elementName, BreakwaterSiteHeader);
+        }
+
+        const mountHeader = () => {
+            document.querySelectorAll("#bw-header").forEach((header) => header.remove());
+
+            const nativeHeader = document.querySelector(".gh-head, .site-header");
+            if (nativeHeader) {
+                nativeHeader.hidden = true;
+            }
+
+            if (!document.querySelector(elementName)) {
+                document.body.prepend(document.createElement(elementName));
+            }
+        };
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", mountHeader, { once: true });
+        } else {
+            mountHeader();
+        }
+    })();
+</script>
+```
+
+### Site Footer Injection
+
+Paste this block into the **Site Footer** box:
+
+```html
+<style>
     .gh-foot,
     .site-footer {
         display: none !important;
     }
 
-    #bw-header,
-    #bw-header *,
     #bw-footer,
     #bw-footer * {
         box-sizing: border-box;
     }
 
-    .bw-container {
-        width: min(1120px, calc(100% - 40px));
-        margin: 0 auto;
-    }
-
-    #bw-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        background: var(--bw-logo-bg);
-        backdrop-filter: blur(12px);
-        transition: all 0.3s ease-in-out;
-    }
-
-    #bw-header .bw-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 24px;
-        min-height: 120px;
-        padding: 10px 0;
-        transition: all 0.3s ease-in-out;
-    }
-
-    #bw-header.bw-scrolled {
-        border-bottom-color: rgba(0, 0, 0, 0.1);
-    }
-
-    #bw-header.bw-scrolled .bw-container {
-        min-height: 80px;
-    }
-
-    .bw-logo {
-        display: flex;
-        align-items: center;
-        max-height: 160px;
-    }
-
-    .bw-logo img {
-        display: block;
-        width: auto;
-        height: 160px;
-        max-width: 100%;
-        object-fit: contain;
-        transition: all 0.3s ease-in-out;
-    }
-
-    #bw-header.bw-scrolled .bw-logo img {
-        height: 90px;
-    }
-
-    .bw-nav-links {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 18px;
-    }
-
-    .bw-nav-links a {
-        color: var(--bw-ink);
-        font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        font-size: 0.92rem;
-        font-weight: 600;
-        line-height: 1.6;
-        text-decoration: none;
-    }
-
-    .bw-nav-links a:hover {
-        text-decoration: underline;
-    }
-
-    .bw-nav-links .bw-cta {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 40px;
-        padding: 8px 20px;
-        border: 1px solid transparent;
-        border-radius: 6px;
-        color: #fff;
-        background: var(--bw-teal);
-        font-weight: 700;
-        line-height: 1.2;
-    }
-
-    .bw-menu-toggle {
-        display: none;
-        z-index: 20;
-        padding: 10px;
-        border: 0;
-        background: transparent;
-        cursor: pointer;
-    }
-
-    .bw-hamburger {
-        position: relative;
-        display: block;
-        width: 24px;
-        height: 2px;
-        background: var(--bw-ink);
-        transition: background 0.2s ease-out;
-    }
-
-    .bw-hamburger::before,
-    .bw-hamburger::after {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-        background: var(--bw-ink);
-        content: "";
-        transition: all 0.2s ease-out;
-    }
-
-    .bw-hamburger::before {
-        top: 8px;
-    }
-
-    .bw-hamburger::after {
-        bottom: 8px;
-    }
-
-    .bw-menu-toggle.bw-active .bw-hamburger {
-        background: transparent;
-    }
-
-    .bw-menu-toggle.bw-active .bw-hamburger::before {
-        top: 0;
-        transform: rotate(45deg);
-    }
-
-    .bw-menu-toggle.bw-active .bw-hamburger::after {
-        bottom: 0;
-        transform: rotate(-45deg);
-    }
-
     #bw-footer {
         padding: 54px 0 28px;
         color: rgba(255, 255, 255, 0.82);
-        background: var(--bw-navy);
+        background: #1d3548;
         font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 16px;
         line-height: 1.6;
     }
 
-    .bw-footer-content {
+    #bw-footer .bw-container {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+    }
+
+    #bw-footer .bw-footer-content {
         display: grid;
         grid-template-columns: 1.5fr 1fr 1fr;
         gap: 24px;
@@ -345,98 +516,27 @@ Paste this block into the **Site Header** box:
         text-decoration: underline;
     }
 
-    .bw-footer-links {
+    #bw-footer .bw-footer-links {
         margin: 14px 0 0;
         padding: 0;
         list-style: none;
     }
 
-    .bw-footer-bottom {
+    #bw-footer .bw-footer-bottom {
         margin-top: 34px;
         padding-top: 20px;
         border-top: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     @media (max-width: 960px) {
-        #bw-header .bw-container {
-            min-height: 80px;
-        }
-
-        .bw-logo {
-            max-height: 120px;
-        }
-
-        .bw-logo img {
-            height: 120px;
-        }
-
-        #bw-header.bw-scrolled .bw-logo img {
-            height: 90px;
-        }
-
-        .bw-menu-toggle {
-            display: block;
-        }
-
-        .bw-nav-links {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            left: 0;
-            display: none;
-            flex-direction: column;
-            gap: 24px;
-            padding: 40px;
-            border-bottom: 1px solid var(--bw-line);
-            background: var(--bw-logo-bg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .bw-nav-links.bw-active {
-            display: flex;
-        }
-
-        .bw-nav-links a {
-            width: 100%;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-
-        .bw-footer-content {
+        #bw-footer .bw-footer-content {
             grid-template-columns: 1fr;
         }
     }
 </style>
-```
 
-### Site Footer Injection
-
-Paste this block into the **Site Footer** box:
-
-```html
 <script>
     (() => {
-        const headerMarkup = `
-            <nav id="bw-header" aria-label="Main navigation">
-                <div class="bw-container">
-                    <a href="https://breakwaterops.com/" class="bw-logo">
-                        <img src="https://breakwaterops.com/images/breakwater-logo.png" alt="Breakwater Operations">
-                    </a>
-                    <button class="bw-menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
-                        <span class="bw-hamburger"></span>
-                    </button>
-                    <div class="bw-nav-links">
-                        <a href="https://breakwaterops.com/#how-we-help">How We Help</a>
-                        <a href="https://breakwaterops.com/#services">Services</a>
-                        <a href="https://breakwaterops.com/#approach">Approach</a>
-                        <a href="https://breakwaterops.com/#team">Team</a>
-                        <a href="https://blog.breakwaterops.com">Blog</a>
-                        <a href="https://breakwaterops.com/#contact" class="bw-cta">Get Started</a>
-                    </div>
-                </div>
-            </nav>
-        `;
-
         const footerMarkup = `
             <footer id="bw-footer">
                 <div class="bw-container">
@@ -467,55 +567,15 @@ Paste this block into the **Site Footer** box:
             </footer>
         `;
 
-        document.body.insertAdjacentHTML("afterbegin", headerMarkup);
+        document.querySelectorAll("#bw-footer").forEach((footer) => footer.remove());
 
-        const nativeHeader = document.querySelector(
-            ".gh-head:not(#bw-header), .site-header:not(#bw-header)"
-        );
-        const nativeFooter = document.querySelector(
-            ".gh-foot:not(#bw-footer), .site-footer:not(#bw-footer)"
-        );
-
-        if (nativeHeader) {
-            nativeHeader.hidden = true;
-        }
-
+        const nativeFooter = document.querySelector(".gh-foot, .site-footer");
         if (nativeFooter) {
             nativeFooter.insertAdjacentHTML("beforebegin", footerMarkup);
             nativeFooter.hidden = true;
         } else {
             document.body.insertAdjacentHTML("beforeend", footerMarkup);
         }
-
-        const header = document.querySelector("#bw-header");
-        const menuToggle = header.querySelector(".bw-menu-toggle");
-        const navLinks = header.querySelector(".bw-nav-links");
-
-        const closeMenu = () => {
-            menuToggle.classList.remove("bw-active");
-            navLinks.classList.remove("bw-active");
-            menuToggle.setAttribute("aria-expanded", "false");
-        };
-
-        menuToggle.addEventListener("click", () => {
-            const isOpen = navLinks.classList.toggle("bw-active");
-            menuToggle.classList.toggle("bw-active", isOpen);
-            menuToggle.setAttribute("aria-expanded", String(isOpen));
-        });
-
-        navLinks.querySelectorAll("a").forEach((link) => {
-            link.addEventListener("click", closeMenu);
-        });
-
-        window.addEventListener("scroll", () => {
-            header.classList.toggle("bw-scrolled", window.scrollY > 50);
-        });
-
-        window.addEventListener("resize", () => {
-            if (window.innerWidth > 960) {
-                closeMenu();
-            }
-        });
     })();
 </script>
 ```
@@ -525,11 +585,13 @@ Paste this block into the **Site Footer** box:
 After Ghost activates the domain and the code injection is saved:
 
 1. Open the blog homepage and a post page at desktop and mobile widths.
-2. Confirm there is only one header and one footer.
-3. Confirm the header shrinks after scrolling 50 pixels.
-4. Confirm the mobile menu opens, closes, and updates `aria-expanded`.
-5. Confirm every homepage section link leaves the blog and opens the correct section on `breakwaterops.com`.
-6. Confirm the logo loads from `https://breakwaterops.com/images/breakwater-logo.png`.
+2. Inspect the page and confirm there is one `<breakwater-site-header>` element and no visible Ghost or legacy `#bw-header`.
+3. Compare the header with the homepage at the same viewport width before and after scrolling 50 pixels.
+4. Confirm the content width is 1120 pixels with 20-pixel minimum side margins.
+5. Confirm the logo renders at 160 pixels tall before scrolling and 90 pixels after scrolling.
+6. Confirm the mobile menu opens, closes, and updates `aria-expanded`.
+7. Confirm every homepage section link leaves the blog and opens the correct section on `breakwaterops.com`.
+8. Confirm the logo loads from `https://breakwaterops.com/images/breakwater-logo.png`.
 
 Check the domain from a terminal:
 
