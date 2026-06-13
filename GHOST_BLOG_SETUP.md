@@ -143,6 +143,15 @@ Paste this block into the **Site Header** box:
         transition: background-color 0.2s ease, transform 0.2s ease !important;
     }
 
+    .site-content .gh-button span,
+    .site-content .button span,
+    .site-content .btn span,
+    .site-content .gh-signup-btn span,
+    .site-content .gh-portal-btn span,
+    .site-content button[type="submit"] span {
+        color: var(--color-paper) !important;
+    }
+
     .site-content .gh-button:hover,
     .site-content .button:hover,
     .site-content .btn:hover,
