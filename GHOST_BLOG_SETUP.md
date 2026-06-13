@@ -473,6 +473,13 @@ Paste this block into the **Site Footer** box:
     }
 
     #bw-footer {
+        position: relative;
+        z-index: 2;
+        display: block;
+        width: 100%;
+        flex: none;
+        clear: both;
+        isolation: isolate;
         padding: 54px 0 28px;
         color: rgba(255, 255, 255, 0.82);
         background: #1d3548;
@@ -571,8 +578,17 @@ Paste this block into the **Site Footer** box:
 
         const nativeFooter = document.querySelector(".gh-foot, .site-footer");
         if (nativeFooter) {
-            nativeFooter.insertAdjacentHTML("beforebegin", footerMarkup);
             nativeFooter.hidden = true;
+        }
+
+        /*
+         * Rand places its footer inside .site, where .site-content has its own
+         * stacking context. Mount the Breakwater footer after .site so content
+         * can never paint over it.
+         */
+        const themeShell = document.querySelector(".site, .gh-site");
+        if (themeShell) {
+            themeShell.insertAdjacentHTML("afterend", footerMarkup);
         } else {
             document.body.insertAdjacentHTML("beforeend", footerMarkup);
         }
@@ -592,6 +608,8 @@ After Ghost activates the domain and the code injection is saved:
 6. Confirm the mobile menu opens, closes, and updates `aria-expanded`.
 7. Confirm every homepage section link leaves the blog and opens the correct section on `breakwaterops.com`.
 8. Confirm the logo loads from `https://breakwaterops.com/images/breakwater-logo.png`.
+9. Confirm `#bw-footer` is a sibling immediately after `.site`, not a child of `.site`.
+10. Confirm the bottom of the blog content ends above the footer at desktop and mobile widths.
 
 Check the domain from a terminal:
 
